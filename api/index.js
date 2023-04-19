@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs')
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
-const imageDownloader = require('image-downloader')
+const imageDownloader = require('image-downloader');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'fasefrawr4r5r3wqsdfdsfdfsdf'
@@ -90,7 +90,7 @@ app.get("/profile", (req,res) => {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
             const {name, email, _id} = await User.findById(userData.id)
-            res.json(name, email, _id)
+            res.json({name, email, _id})
         })
 
     } else {
@@ -109,7 +109,7 @@ app.post("/upload-by-link", async (req,res) => {
     const newName = 'photo' + Date.now() + '.jpg';
     await imageDownloader.image({
         url: link,
-        dest: __dirname + '/uploads',
+        dest: __dirname + `/uploads/${newName}`,
     });
     res.json(newName)
 })

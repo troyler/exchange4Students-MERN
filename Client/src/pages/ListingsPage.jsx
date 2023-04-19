@@ -96,10 +96,10 @@ export default function ListingsPage(){
                         <div className="grid grid-cols-3 md:grid-cols-4 lg-grid-cols-6">
                             {addedPhotos.length > 0 && addedPhotos.map(link => (
                                 <div>
-                                    <img src={'http://localhost:4000/uploads/'+link} alt="" />
+                                    <img className = "p-4" src={'http://localhost:4000/uploads/'+link} alt="" />
                                 </div>
                             ))}
-                            <button className="border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
+                            <button className="border bg-transparent rounded-2xl p-8 m-2 text-2xl text-gray-600">
                                + Upload from device
                             </button>
                         </div>

@@ -1,6 +1,7 @@
 import {Link, useParams} from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import PhotosUploader from "../PhotosUploader";
 
 export default function ListingsPage(){
     const {action} = useParams();
@@ -8,17 +9,7 @@ export default function ListingsPage(){
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [condition, setCondition] = useState('');
-    const [addedPhotos, setAddedPhotos] = useState([]);
-    const [photoLink, setPhotoLink] = useState('');
-
-    async function addPhotoByLink(ev) {
-        ev.preventDefault();
-        const {data:filename} = await axios.post('/upload-by-link', {link: photoLink});
-        setAddedPhotos(prev => {
-            return [...prev, filename];
-        });
-        setPhotoLink('');
-    }
+    const [addedPhotos, setAddedPhotos] = useState([])
 
     async function pushListing(ev) {
         ev.preventDefault();
@@ -84,25 +75,7 @@ export default function ListingsPage(){
                                 </optgroup>
                             </select>
                         <h2 className = "text-l mt-4">Photos</h2>
-                        <div className = "flex gap-2">
-                            <input 
-                                type="text"
-                                value = {photoLink} 
-                                onChange = {ev => setPhotoLink(ev.target.value)} 
-                                placeholder={"Add using a link....jpg"} 
-                            />
-                            <button onClick = {addPhotoByLink}className="bg-gray-200 px-4 rounded-2xl">Add&nbsp; Photo</button>
-                        </div>
-                        <div className="grid grid-cols-3 md:grid-cols-4 lg-grid-cols-6">
-                            {addedPhotos.length > 0 && addedPhotos.map(link => (
-                                <div>
-                                    <img className = "p-4" src={'http://localhost:4000/uploads/'+link} alt="" />
-                                </div>
-                            ))}
-                            <button className="border bg-transparent rounded-2xl p-8 m-2 text-2xl text-gray-600">
-                               + Upload from device
-                            </button>
-                        </div>
+                        <PhotosUploader  addedPhotos = {addedPhotos} onChange ={setAddedPhotos}/>
                         <button onClick = {pushListing} className="primary">Publish Listing</button>
                     </form>
                 </div>

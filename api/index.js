@@ -49,15 +49,23 @@ app.post('/register', async (req,res) => {
 
 
 app.post('/listing', async (req,res) => {
-    const {title, description, price, condition} = req.body;
+    const {title, description, price, condition, category, addedPhotos} = req.body;
+
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+    })
     try{
-    const userDoc = await product.create({
+    const productDoc = await product.create({
+        owner : userData.id,
         title,
         description,
         price,
-        condition
+        condition,
+        category,
+        addedPhotos,
     });
-    res.json({userDoc});
+    res.json({productDoc});
 } catch(e) {
     res.status(422).json(e);
 }

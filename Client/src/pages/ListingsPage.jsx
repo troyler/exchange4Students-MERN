@@ -9,22 +9,30 @@ export default function ListingsPage(){
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
     const [condition, setCondition] = useState('');
-    const [addedPhotos, setAddedPhotos] = useState([])
+    const [addedPhotos, setAddedPhotos] = useState([]);
+    const [redirect, setRedirect] = useState('');
 
-    async function pushListing(ev) {
+    async function publishListing(ev) {
         ev.preventDefault();
         try{
-            await axios.post('/listing',{
+            const {data} = await axios.post('/listing',{
                 title,
                 description,
                 price,
                 condition,
+                category,
+                addedPhotos,
             });
 
             alert("Succesfully listed item");
+            setRedirect('account/listing')
         } catch(e) {
             alert("failed");
         }
+    }
+
+    if (redirect){
+        return <Navigate to = {redirect} />
     }
 
 
@@ -43,7 +51,7 @@ export default function ListingsPage(){
                                 )}
             {action === 'new' && (
                 <div>
-                    <form>
+                    <form onSubmit={publishListing}>
                         <h2 className = "text-l mt-4">Title</h2>
                         <input
                              type = "text" 
@@ -76,7 +84,7 @@ export default function ListingsPage(){
                             </select>
                         <h2 className = "text-l mt-4">Photos</h2>
                         <PhotosUploader  addedPhotos = {addedPhotos} onChange ={setAddedPhotos}/>
-                        <button onClick = {pushListing} className="primary">Publish Listing</button>
+                        <button className="primary">Publish Listing</button>
                     </form>
                 </div>
             )}

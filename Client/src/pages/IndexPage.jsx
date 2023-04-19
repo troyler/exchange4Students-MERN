@@ -1,10 +1,15 @@
 import { useState } from "react";
 import Header from "../Header";
+import CartPage from "./CartPage";
+
 
 export default function IndexPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [cart, setCart] = useState([]);
+  const [itemCount, setItemCount] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+
 
   const itemListings = [
     {
@@ -44,8 +49,10 @@ export default function IndexPage() {
   const categories = [...new Set(itemListings.map(item => item.category))];
 
   const handleAddToCart = (item) => {
-    setCart((prevCart) => [...prevCart, item]);
-  }
+    setCartItems([...cartItems, { name: item.title, price: item.price }]);
+    setItemCount(itemCount + 1);
+    console.log(cartItems);
+  };
 
   return (
     <div>
@@ -64,6 +71,10 @@ export default function IndexPage() {
           ))}
         </select>
       </div>
+      <div className="cart-count">
+        {itemCount > 0 ? `Items in Cart: ${itemCount}` : ""}
+      </div>
+      <CartPage cartItems={cartItems} />
       <div className="item-list">
         {filteredListings.map((item) => (
           <div key={item.id} className="listing-item">

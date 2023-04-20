@@ -1,0 +1,130 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  }
+  
+  .listings-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .listing-item {
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .listing-item h3 {
+    margin-top: 0;
+  }
+  
+  .listing-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .listing-image {
+    object-fit: scale-down;
+    width: 50%;
+    height: 50%;
+  }
+  
+  .item-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+  .item {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    padding: 20px;
+    width: calc(33.33% - 20px);
+  }
+  
+  .item img {
+    display: block;
+    height: 200px;
+    margin: 0 auto;
+    width: 200px;
+  }
+  
+  .item-name {
+    cursor: pointer;
+    font-size: 18px;
+    margin: 10px 0 5px 0;
+  }
+  
+  .item-description {
+    margin-bottom: 10px;
+  }
+  
+  .item-price {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .cart-icon {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    border: 1px solid black;
+    border-radius: 10%;
+  }
+  
+  .popup {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999; 
+  }
+  
+  .popup-image {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .popup-window {
+    border: 1px solid black;
+    padding: 20px;
+  }
+
+  .add-to-cart-button {
+    background-color: grey;
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    border-radius: 1px;
+    cursor: pointer;
+  }
+  
+  

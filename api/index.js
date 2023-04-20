@@ -48,28 +48,36 @@ app.post('/register', async (req,res) => {
 });
 
 
-app.post('/listing', async (req,res) => {
+app.post('/listings', async (req,res) => {
     const {title, description, price, condition, category, addedPhotos} = req.body;
 
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
+        try{
+            const productDoc = await product.create({
+                owner : userData.id,
+                title,
+                description,
+                price,
+                condition,
+                category,
+                addedPhotos,
+            });
+            res.json(productDoc);
+        } catch(e) {
+            res.status(422).json(e);
+        }
     })
-    try{
-    const productDoc = await product.create({
-        owner : userData.id,
-        title,
-        description,
-        price,
-        condition,
-        category,
-        addedPhotos,
-    });
-    res.json({productDoc});
-} catch(e) {
-    res.status(422).json(e);
-}
 });
+
+app.get('/listings', (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        const {id} = userData;
+        res.json( await product.find({owner:id}))
+    }
+    )})
 
 app.post('/login', async (req,res) => {
     const {email,password} = req.body;
@@ -138,7 +146,6 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
     }
    res.json(uploadedFiles);
 });
-
 
 
 app.listen(4000);

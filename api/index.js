@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
 const imageDownloader = require('image-downloader');
+const multer = require('multer');
+const fs = require('fs');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'fasefrawr4r5r3wqsdfdsfdfsdf'
@@ -46,20 +48,36 @@ app.post('/register', async (req,res) => {
 });
 
 
-app.post('/listing', async (req,res) => {
-    const {title, description, price, condition} = req.body;
-    try{
-    const userDoc = await product.create({
-        title,
-        description,
-        price,
-        condition
-    });
-    res.json({userDoc});
-} catch(e) {
-    res.status(422).json(e);
-}
+app.post('/listings', async (req,res) => {
+    const {title, description, price, condition, category, addedPhotos} = req.body;
+
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        try{
+            const productDoc = await product.create({
+                owner : userData.id,
+                title,
+                description,
+                price,
+                condition,
+                category,
+                addedPhotos,
+            });
+            res.json(productDoc);
+        } catch(e) {
+            res.status(422).json(e);
+        }
+    })
 });
+
+app.get('/listings', (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        const {id} = userData;
+        res.json( await product.find({owner:id}))
+    }
+    )})
 
 app.post('/login', async (req,res) => {
     const {email,password} = req.body;
@@ -113,6 +131,21 @@ app.post("/upload-by-link", async (req,res) => {
     });
     res.json(newName)
 })
+
+const photosMiddleware = multer({dest:'uploads/'});
+
+app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
+    const uploadedFiles = [];
+    for (let i =0; i < req.files.length; i++){
+        const {path, originalname} = req.files[i];
+        const parts = originalname.split(".");
+        const ext = parts[parts.length - 1];
+        const newPath = path + "." + ext;
+        fs.renameSync(path, newPath);
+        uploadedFiles.push(newPath.replace('uploads/', ''));
+    }
+   res.json(uploadedFiles);
+});
 
 
 app.listen(4000);

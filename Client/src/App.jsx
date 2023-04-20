@@ -10,8 +10,6 @@ import ProfilePage from './pages/ProfilePage';
 import ListingsPage from './pages/ListingsPage';
 import ListingsFormPage from './pages/ListingsFormPage';
 
-
-
 axios.defaults.baseURL = "http://localhost:4000"
 axios.defaults.withCredentials = true;
 

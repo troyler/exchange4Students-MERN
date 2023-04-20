@@ -1,11 +1,12 @@
 import PhotosUploader from "../PhotosUploader";
 import axios from "axios";
-import {useState} from 'react';
-import { Navigate } from "react-router-dom";
+import {useState, useEffect} from 'react';
+import { Navigate, useParams} from "react-router-dom";
 
 
 export default function ListingsFormPage(){
 
+    const {id} = useParams();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -15,10 +16,38 @@ export default function ListingsFormPage(){
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect, setRedirect] = useState(false);
 
+    useEffect(() => {
+        if (!id){
+            return;
+        }
+        axios.get('/listings/'+id)
+        .then(response => {
+            const {data} = response;
+            setTitle(data.title);
+            setDescription(data.description);
+            setPrice(data.price);
+            setCondition(data.condition);
+            setCategory(data.category);
+            setAddedPhotos(data.addedPhotos);
+        })
+    }, [id]);
+
+
 
     async function publishListing(ev) {
         ev.preventDefault();
-        try{
+        const listingData = {title, description, price,
+                condition, category, addedPhotos,
+        }
+        if (id) {
+            await axios.put('/listings',{
+                id,
+                ...listingData
+            });
+            alert("Succesfully listed item");
+            setRedirect(true)
+            
+        } else {
             await axios.post('/listings',{
                 title,
                 description,
@@ -29,10 +58,8 @@ export default function ListingsFormPage(){
             });
             alert("Succesfully listed item");
             setRedirect(true);
-        } catch(e) {
-            alert("failed");
-        }
     }
+}
 
     if(redirect) {
         return <Navigate to = {'/profile/listings'} />

@@ -79,6 +79,40 @@ app.get('/listings', (req,res) => {
     }
     )})
 
+app.get('/listings/:id', async (req,res) => {
+    const {id} = req.params;
+    res.json( await product.findById(id));
+});
+
+
+app.put('/listings', async (req,res) => {
+    const {
+        id,
+        title,
+        description,
+        price,
+        condition,
+        category,
+        addedPhotos,
+    } = req.body;
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        const productDoc = await product.findById(id);
+        if (userData.id === productDoc.owner.toString()) {
+            productDoc.set({title,
+                description,
+                price,
+                condition,
+                category,
+                addedPhotos,});
+            await productDoc.save()
+            res.json('ok')
+
+        }
+    });
+});
+
 app.post('/login', async (req,res) => {
     const {email,password} = req.body;
     const userDoc = await User.findOne({email})

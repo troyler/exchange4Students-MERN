@@ -6,7 +6,6 @@ import Layout from './Layout';
 import RegisterPage from './pages/RegisterPage';
 import axios from "axios";
 import { UserContextProvider} from './UserContext';
-import AccountPage from './pages/AccountPage';
 import ListingsPage from './pages/ListingsPage';
 
 axios.defaults.baseURL = "http://localhost:4000"

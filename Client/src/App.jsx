@@ -6,10 +6,8 @@ import Layout from './Layout';
 import RegisterPage from './pages/RegisterPage';
 import axios from "axios";
 import { UserContextProvider} from './UserContext';
-import ProfilePage from './pages/ProfilePage';
+import AccountPage from './pages/AccountPage';
 import ListingsPage from './pages/ListingsPage';
-import ListingsFormPage from './pages/ListingsFormPage';
-import CartPage from './pages/CartPage';
 
 axios.defaults.baseURL = "http://localhost:4000"
 axios.defaults.withCredentials = true;
@@ -21,12 +19,11 @@ function App() {
       <Route path = "/" element = {<Layout  />}>
         <Route index element = {<IndexPage  />}/>
         <Route path = "/login" element = {<LoginPage  />}/>
-        <Route path = "/cart" element = {<CartPage />}/>
         <Route path = "/register" element = {<RegisterPage  />}/>
         <Route path = "/profile" element = {<ProfilePage  />}/>
         <Route path = "/profile/listings" element = {<ListingsPage  />}/>
         <Route path = "/profile/listings/new" element = {<ListingsFormPage  />}/>
-        
+        <Route path = "/profile/listings/:id" element = {<ListingsFormPage  />}/>
       </Route>
     </Routes>
     </UserContextProvider>

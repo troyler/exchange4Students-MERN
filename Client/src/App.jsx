@@ -25,6 +25,7 @@ function App() {
         <Route path = "/cart" element = {<CartPage  />}/>
         <Route path = "/profile" element = {<ProfilePage  />}/>
         <Route path = "/profile/listings" element = {<ListingsPage  />}/>
+        <Route path = "/profile/listings/:id" element = {<ListingsFormPage  />}/>
         <Route path = "/profile/listings/new" element = {<ListingsFormPage  />}/>
       </Route>
     </Routes>

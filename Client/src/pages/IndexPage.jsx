@@ -48,21 +48,47 @@ export default function IndexPage() {
 
 
   return (
-    <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {listings.length > 0 && listings.map(listing => (
-        <Link to = {'/listings/' + listing._id}>
-          <div className = "bg-gray-500 mb-2 rounded-2xl flex">
-            {listing.addedPhotos?.[0] && (
-            <img className = "rounded-2xl object-cover aspect-square"src = {"http://localhost:4000/uploads/" + listing.addedPhotos?.[0]} alt ="" />
-            )}
+    <div>
+      <h1>Homepage - Browse Items</h1>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="all">All categories</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+        <div className="cart-count">
+          {itemCount > 0 ? `Items in Cart: ${itemCount}` : ""}
+          <CartPage cartItems={cartItems} />
+        </div>
+        <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {listings.length > 0 && listings.map(listing => (
+          <Link to = {'/listings/' + listing._id}>
+            <div className = "bg-gray-500 mb-2 rounded-2xl flex">
+              {listing.addedPhotos?.[0] && (
+              <img className = "rounded-2xl object-cover aspect-square"src = {"http://localhost:4000/uploads/" + listing.addedPhotos?.[0]} alt ="" />
+              )}
             </div>
-          <h2 className="text-md font-semibold truncate">{listing.title}</h2>
-          <div className ="justify-between flex">
-            <h2 className = "text-sm">Condition: {listing.condition}</h2>
-            <h3 className="font-bold">${listing.price}</h3>
-          </div>
-        </Link>
-        ))}
-    </div>
+            <h2 className="text-md font-semibold truncate">{listing.title}</h2>
+            <div className ="justify-between flex">
+              <h2 className = "text-sm">Condition: {listing.condition}</h2>
+              <h3 className="font-bold">${listing.price}</h3>
+              <button
+            className="add-to-cart-button"
+            onClick={() => handleAddToCart(item)}>
+            Add to Cart
+          </button>
+            </div>
+          </Link>
+          ))}
+      </div>
+      </div>
   );
 }

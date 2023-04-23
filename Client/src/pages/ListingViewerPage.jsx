@@ -54,7 +54,7 @@ export default function ListingViewerPage() {
                 <h2 className="font-extrabold text-xl">$ {listing.price}</h2>
             </div>
             <div className="relative">
-                <div className="grid gap-2 grid-cols-[2fr_1fr]">
+                <div className="grid gap-2 grid-cols-[2fr_1fr] overflow-hidden rounded-2xl">
                     <div className="grid gap-2">
                         {listing.addedPhotos?.[0] && (
                             <img className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[0]} />

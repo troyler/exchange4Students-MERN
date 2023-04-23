@@ -40,7 +40,7 @@ export default function IndexPage() {
   const categories = [...new Set(listings.map(item => item.category))];
 
   const handleAddToCart = (item) => {
-    setCartItems([...cartItems, { name: item.title, price: item.price }]);
+    setCartItems([...cartItems, { name: item.title, price: item.price}]);
     setItemCount(itemCount + 1);
     console.log(cartItems);
   };

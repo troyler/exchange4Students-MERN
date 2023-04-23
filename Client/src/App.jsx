@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import ListingsPage from './pages/ListingsPage';
 import ListingsFormPage from './pages/ListingsFormPage';
 import CartPage from './pages/CartPage';
+import ListingViewerPage from './pages/ListingViewerPage';
 
 axios.defaults.baseURL = "http://localhost:4000"
 axios.defaults.withCredentials = true;
@@ -27,6 +28,7 @@ function App() {
         <Route path = "/profile/listings" element = {<ListingsPage  />}/>
         <Route path = "/profile/listings/:id" element = {<ListingsFormPage  />}/>
         <Route path = "/profile/listings/new" element = {<ListingsFormPage  />}/>
+        <Route path = "/listing/:id" element = {<ListingViewerPage />}/>
       </Route>
     </Routes>
     </UserContextProvider>

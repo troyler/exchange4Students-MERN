@@ -28,7 +28,7 @@ function App() {
         <Route path = "/profile/listings" element = {<ListingsPage  />}/>
         <Route path = "/profile/listings/:id" element = {<ListingsFormPage  />}/>
         <Route path = "/profile/listings/new" element = {<ListingsFormPage  />}/>
-        <Route path = "/listing/:id" element = {<ListingViewerPage />}/>
+        <Route path = "/listings/:id" element = {<ListingViewerPage />}/>
       </Route>
     </Routes>
     </UserContextProvider>

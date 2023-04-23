@@ -50,7 +50,7 @@ export default function IndexPage() {
   return (
     <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {listings.length > 0 && listings.map(listing => (
-        <Link to = {'/listing/' + listing._id}>
+        <Link to = {'/listings/' + listing._id}>
           <div className = "bg-gray-500 mb-2 rounded-2xl flex">
             {listing.addedPhotos?.[0] && (
             <img className = "rounded-2xl object-cover aspect-square"src = {"http://localhost:4000/uploads/" + listing.addedPhotos?.[0]} alt ="" />

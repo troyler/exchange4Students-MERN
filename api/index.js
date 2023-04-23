@@ -71,13 +71,17 @@ app.post('/listings', async (req,res) => {
     })
 });
 
-app.get('/listings', (req,res) => {
+app.get('/user-listings', (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const {id} = userData;
         res.json( await product.find({owner:id}))
-    }
-    )})
+    })
+})
+
+app.get('/listings', async (req,res) => {
+    res.json(await product.find());
+});
 
 app.get('/listings/:id', async (req,res) => {
     const {id} = req.params;
@@ -168,14 +172,14 @@ app.post("/upload-by-link", async (req,res) => {
 
 const photosMiddleware = multer({dest:'uploads/'});
 
-app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
+app.post('/upload', photosMiddleware.array('photos', 100), async (req,res) => {
     const uploadedFiles = [];
     for (let i =0; i < req.files.length; i++){
         const {path, originalname} = req.files[i];
         const parts = originalname.split(".");
         const ext = parts[parts.length - 1];
         const newPath = path + "." + ext;
-        fs.renameSync(path, newPath);
+        await fs.renameSync(path, newPath);
         uploadedFiles.push(newPath.replace('uploads/', ''));
     }
    res.json(uploadedFiles);

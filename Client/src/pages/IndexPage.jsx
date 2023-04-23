@@ -1,52 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Header from "../Header";
 import CartPage from "./CartPage";
+import axios from "axios";
+import { list } from "postcss";
 
 
 export default function IndexPage() {
+
+
+
+
+
+
+
+
+
+
+  const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [cart, setCart] = useState([]);
   const [itemCount, setItemCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
 
+  useEffect(() => {
+    axios.get('/listings')
+    .then(response => {
+      setListings([...response.data]);
+    })
+  },[]);
 
-  const itemListings = [
-    {
-      id: 1,
-      title: "iPhone 13 Pro",
-      description: "Brand new iPhone 13 Pro, never been used",
-      price: 999,
-      condition: "brand new",
-      category: "electronics",
-      photos: ["iphone-13-pro-1.jpg", "iphone-13-pro-2.jpg"],
-    },
-    {
-      id: 2,
-      title: "MacBook Pro",
-      description: "Used MacBook Pro in excellent condition",
-      price: 1499,
-      condition: "like new",
-      category: "electronics",
-      photos: ["macbook-pro-1.jpg", "macbook-pro-2.jpg", "macbook-pro-3.jpg"],
-    },
-    {
-      id: 3,
-      title: "Canon EOS R5",
-      description: "Professional grade camera in excellent condition",
-      price: 3299,
-      condition: "used",
-      category: "photography",
-      photos: ["canon-eos-r5-1.jpg", "canon-eos-r5-2.jpg"],
-    },
-  ];
 
-  const filteredListings = itemListings.filter((item) =>
+  const filteredListings = listings.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedCategory === "all" || item.category === selectedCategory)
   );
 
-  const categories = [...new Set(itemListings.map(item => item.category))];
+  const categories = [...new Set(listings.map(item => item.category))];
 
   const handleAddToCart = (item) => {
     setCartItems([...cartItems, { name: item.title, price: item.price }]);
@@ -54,48 +45,24 @@ export default function IndexPage() {
     console.log(cartItems);
   };
 
+
+
   return (
-    <div>
-      <h1>Homepage - Browse Items</h1>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-          <option value="all">All categories</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
-      </div>
-      <div className="cart-count">
-        {itemCount > 0 ? `Items in Cart: ${itemCount}` : ""}
-      </div>
-      <CartPage cartItems={cartItems} />
-      <div className="item-list">
-        {filteredListings.map((item) => (
-          <div key={item.id} className="listing-item">
-            <img
-              src={`http://localhost:4000/uploads/${item.photos[0]}`}
-              alt=""
-              className="listing-image"
-            />
-            <div>
-              <h3 className="item-name">{item.title}</h3>
-              <p className="item-description">{item.description}</p>
-              <p className="item-price">{`Price: $${item.price}`}</p>
-              <button
-                className="add-to-cart-button"
-                onClick={() => handleAddToCart(item)}>
-                Add to Cart
-              </button>
+    <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {listings.length > 0 && listings.map(listing => (
+        <Link to = {'/listings/' + listing._id}>
+          <div className = "bg-gray-500 mb-2 rounded-2xl flex">
+            {listing.addedPhotos?.[0] && (
+            <img className = "rounded-2xl object-cover aspect-square"src = {"http://localhost:4000/uploads/" + listing.addedPhotos?.[0]} alt ="" />
+            )}
             </div>
+          <h2 className="text-md font-semibold truncate">{listing.title}</h2>
+          <div className ="justify-between flex">
+            <h2 className = "text-sm">Condition: {listing.condition}</h2>
+            <h3 className="font-bold">${listing.price}</h3>
           </div>
+        </Link>
         ))}
-      </div>
     </div>
   );
 }

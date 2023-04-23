@@ -11,8 +11,8 @@ export default function ListingsFormPage(){
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
-    const [condition, setCondition] = useState('');
-    const [category, setCategory] = useState('');
+    const [condition, setCondition] = useState('Used - like new');
+    const [category, setCategory] = useState('Home Goods');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect, setRedirect] = useState(false);
 
@@ -93,10 +93,10 @@ export default function ListingsFormPage(){
                 <label>Pick Condition:        &nbsp;    </label>
                     <select value = {condition} onChange = {ev => setCondition(ev.target.value)} id="condition">
                         <optgroup label="Conditions">
-                        <option value="brand new"> Brand New</option>
-                        <option value="like new"> Used - like new</option>
-                        <option value="used"> Used</option>
-                        <option value="damaged"> Damaged</option>
+                        <option value="Brand New"> Brand New</option>
+                        <option value="Used - like new"> Used - like new</option>
+                        <option value="Used"> Used</option>
+                        <option value="Damaged"> Damaged</option>
                         </optgroup>
                     </select>
                 <label>Choose Catgeory:        &nbsp;    </label>

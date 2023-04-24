@@ -20,6 +20,8 @@ export default function ListingViewerPage() {
         })
   },[id]);
 
+  
+
   if (!listing) return '';
 
   if (showAllPhotos) {
@@ -57,16 +59,16 @@ export default function ListingViewerPage() {
                 <div className="grid gap-2 grid-cols-[2fr_1fr] overflow-hidden rounded-2xl">
                     <div className="grid gap-2">
                         {listing.addedPhotos?.[0] && (
-                            <img className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[0]} />
+                            <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[0]} />
                         )}
                     </div>
                     <div className="grid">
                         {listing.addedPhotos?.[1] && (
-                                <img className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[1]} />
+                                <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[1]} />
                         )}
                         <div className="overflow-hidden">
                         {listing.addedPhotos?.[2] && (
-                                <img className="aspect-square object-cover relative top-2" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[2]} />
+                                <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover relative top-2" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[2]} />
                         )}
                         </div>
                     </div>
@@ -79,8 +81,11 @@ export default function ListingViewerPage() {
                 </button>
 
             </div>
-            <h2 className="mt-4">{listing.description}</h2>
-            <h2>Condition: {listing.condition}</h2>
+            <div className="mt-4">
+                <h2 className="font-semibold"> Decription:</h2>
+                <p>{listing.description}</p>
+                <h2 className="py-4">Condition: {listing.condition}</h2>
+            </div>
         </div>
     );
 }

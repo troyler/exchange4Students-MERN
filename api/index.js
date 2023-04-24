@@ -85,7 +85,7 @@ app.get('/listings', async (req,res) => {
 
 app.get('/listings/:id', async (req,res) => {
     const {id} = req.params;
-    res.json( await product.findById(id));
+    res.json(await product.findById(id));
 });
 
 

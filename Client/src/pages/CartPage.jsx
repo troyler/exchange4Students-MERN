@@ -28,7 +28,6 @@ useEffect(() => {
       setListing([data]);
       console.log("listings" + listings)
       console.log(data.data);
-      calculateTotal();
   })
 },[]);
 

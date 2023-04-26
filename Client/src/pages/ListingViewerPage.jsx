@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function ListingViewerPage() {
     const {id} = useParams();
+    const [hasCart, setHasCart] = useState(false);
 
     const [listing, setListing] = useState('');
     const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -17,19 +18,19 @@ export default function ListingViewerPage() {
         axios.get('/listings/'+ id)
         .then(response => {
         setListing(response.data);
-        console.log(id);
         })
     },[id]);
 
 
     async function addToCart() {
-        console.log(listing._id)
+        if (!hasCart){
         const data = {listing}
+        console.log("data from listing viewer page " + data);
         await axios.post('/carts',{
-            data
+            data: id
         });
-    }
-
+    } 
+}
   
 
   if (!listing) return '';

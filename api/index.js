@@ -31,18 +31,18 @@ mongoose.connect(process.env.MONGO_URL)
 app.post('/carts', async (req,res) => {
     const {quantity} = 1;
     const {data} = req.body;
-    console.log(data);
-
+    console.log("data sent with add to cart "+ data);
     const{token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
         try{
             const cartDoc = await Cart.create({
                 owner : userData.id,
-                items: [{product: data._id, quantity}],
+                items: [{product: data, quantity}],
                 totalPrice: 1,
             });
             res.json(cartDoc);
+            console.log("Cart creation document" + cartDoc);
         } catch(e) {
             res.status(422).json(e);
         }
@@ -53,9 +53,32 @@ app.get('/user-carts', (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const {id} = userData;
-        res.json(await Cart.find({owner:id}))
+        const userCart = await Cart.find({owner:id})
+        const product = await Product.findById(userCart[0].items[0].product)
+        res.json(product);
     })
+})
+
+app.put('/user-carts', async (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        const cartDoc = await Cart.findById(id);
+        if (userData.id === cartDoc.owner.toString()) {
+            productDoc.set({id,
+                title,
+                description,
+                price,
+                condition,
+                category,
+                addedPhotos,});
+            await productDoc.save()
+            res.json('ok')
+
+        }
+    });
 });
+
 
 app.post('/user-carts',async (req,res) => {
     const {token} = req.cookies;
@@ -116,7 +139,7 @@ app.get('/user-listings', (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const {id} = userData;
-        res.json( await Product.find({owner:id}))
+        res.json(await Product.find({owner:id}))
     })
 })
 

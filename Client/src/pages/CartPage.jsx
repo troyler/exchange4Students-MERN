@@ -17,23 +17,38 @@ export default function CartPage() {
         setListing([data]);
         console.log("listings" + listings)
         console.log(data.data);
-        calculateTotal();
     })
 },[]);
 
-    function calculateTotal(){
+useEffect(() => {
+  axios.get('/user-carts')
+  .then(response => {
+      const data = response;
+      console.log("incoming data" +[data]);
+      setListing([data]);
+      console.log("listings" + listings)
+      console.log(data.data);
+  })
+},[]);
+
+    function calculateTotal(){  ///this is not working as of now
       let total = 0;
       if (listings.length > 0) {
         listings.map(listing => (
           total += listing.data.price
         ));
         setTotalPrice(total);
+        console.log(totalPrice)
     }
   }
 
   return (
     <div className="mt-4">
-              <h1>Total Price: ${totalPrice}</h1>
+              {listings.length > 0 && (
+                <div className="text-center max-w-lg mx-auto">
+                      <h1>Total Price: ${totalPrice}</h1>
+                </div>
+            )}
               {listings.length > 0 && listings.map(listing => (
                 <Link to={'/profile/listings/'+listing._id} className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl">
                   <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">

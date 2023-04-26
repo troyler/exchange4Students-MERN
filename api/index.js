@@ -52,10 +52,18 @@ app.post('/carts', async (req,res) => {
 app.get('/user-carts', (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
         const {id} = userData;
         const userCart = await Cart.find({owner:id})
+        console.log(userCart);
+        if (!userCart || userCart[0]=== undefined) {
+            return res.status(404).json({ msg: 'Product not found' });
+        }
+        else {
         const product = await Product.findById(userCart[0].items[0].product)
         res.json(product);
+        }
+        
     })
 })
 
@@ -63,16 +71,9 @@ app.put('/user-carts', async (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
-        const cartDoc = await Cart.findById(id);
+        const cartDoc = await Cart.findByIdAndUpdate(id);
         if (userData.id === cartDoc.owner.toString()) {
-            productDoc.set({id,
-                title,
-                description,
-                price,
-                condition,
-                category,
-                addedPhotos,});
-            await productDoc.save()
+            cartDoc.update
             res.json('ok')
 
         }

@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function ListingViewerPage() {
     const {id} = useParams();
+    const [hasCart, setHasCart] = useState(false);
 
     const [listing, setListing] = useState('');
     const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -18,7 +19,19 @@ export default function ListingViewerPage() {
         .then(response => {
         setListing(response.data);
         })
-  },[id]);
+    },[id]);
+
+
+    async function addToCart() {
+        if (!hasCart){
+        const data = {listing}
+        console.log("data from listing viewer page " + data);
+        await axios.post('/carts',{
+            data: id
+        });
+    } 
+}
+  
 
   if (!listing) return '';
 
@@ -57,16 +70,16 @@ export default function ListingViewerPage() {
                 <div className="grid gap-2 grid-cols-[2fr_1fr] overflow-hidden rounded-2xl">
                     <div className="grid gap-2">
                         {listing.addedPhotos?.[0] && (
-                            <img className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[0]} />
+                            <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[0]} />
                         )}
                     </div>
                     <div className="grid">
                         {listing.addedPhotos?.[1] && (
-                                <img className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[1]} />
+                                <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[1]} />
                         )}
                         <div className="overflow-hidden">
                         {listing.addedPhotos?.[2] && (
-                                <img className="aspect-square object-cover relative top-2" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[2]} />
+                                <img onClick = { () => setShowAllPhotos(true)} className="aspect-square object-cover relative top-2" src ={"http://localhost:4000/uploads/" + listing.addedPhotos[2]} />
                         )}
                         </div>
                     </div>
@@ -78,9 +91,14 @@ export default function ListingViewerPage() {
                 Show More Photos
                 </button>
 
+                <button onClick = {addToCart}> Add to Cart </button>
+
             </div>
-            <h2 className="mt-4">{listing.description}</h2>
-            <h2>Condition: {listing.condition}</h2>
+            <div className="mt-4">
+                <h2 className="font-semibold"> Decription:</h2>
+                <p>{listing.description}</p>
+                <h2 className="py-4">Condition: {listing.condition}</h2>
+            </div>
         </div>
     );
 }

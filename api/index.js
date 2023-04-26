@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User')
-const product = require("./models/product")
+const Product = require("./models/Product")
+const Cart = require("./models/Cart")
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')
 const cookieParser = require('cookie-parser');
@@ -27,7 +28,70 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL)
 
+app.post('/carts', async (req,res) => {
+    const {quantity} = 1;
+    const {data} = req.body;
+    console.log("data sent with add to cart "+ data);
+    const{token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        try{
+            const cartDoc = await Cart.create({
+                owner : userData.id,
+                items: [{product: data, quantity}],
+                totalPrice: 1,
+            });
+            res.json(cartDoc);
+            console.log("Cart creation document" + cartDoc);
+        } catch(e) {
+            res.status(422).json(e);
+        }
+    })
+});
 
+app.get('/user-carts', (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        const {id} = userData;
+        const userCart = await Cart.find({owner:id})
+        const product = await Product.findById(userCart[0].items[0].product)
+        res.json(product);
+    })
+})
+
+app.put('/user-carts', async (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        const cartDoc = await Cart.findById(id);
+        if (userData.id === cartDoc.owner.toString()) {
+            productDoc.set({id,
+                title,
+                description,
+                price,
+                condition,
+                category,
+                addedPhotos,});
+            await productDoc.save()
+            res.json('ok')
+
+        }
+    });
+});
+
+
+app.post('/user-carts',async (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        const listingId = req.params;
+        const {id} = userData;
+        const product = await Product.findById(listingId)
+        if (!product) {
+            return res.status(404).json({ msg: 'Product not found' });
+        }
+        const cart = await Cart.findOne({owner: id})
+    })
+});
 
 app.get("/test", (req,res) => {
     res.json('test ok');
@@ -55,7 +119,7 @@ app.post('/listings', async (req,res) => {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
         try{
-            const productDoc = await product.create({
+            const productDoc = await Product.create({
                 owner : userData.id,
                 title,
                 description,
@@ -75,17 +139,17 @@ app.get('/user-listings', (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const {id} = userData;
-        res.json( await product.find({owner:id}))
+        res.json(await Product.find({owner:id}))
     })
 })
 
 app.get('/listings', async (req,res) => {
-    res.json(await product.find());
+    res.json(await Product.find());
 });
 
 app.get('/listings/:id', async (req,res) => {
     const {id} = req.params;
-    res.json( await product.findById(id));
+    res.json(await Product.findById(id));
 });
 
 
@@ -104,7 +168,8 @@ app.put('/listings', async (req,res) => {
         if (err) throw err;
         const productDoc = await product.findById(id);
         if (userData.id === productDoc.owner.toString()) {
-            productDoc.set({title,
+            productDoc.set({id,
+                title,
                 description,
                 price,
                 condition,
@@ -145,8 +210,8 @@ app.get("/profile", (req,res) => {
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
-            const {name, email, _id} = await User.findById(userData.id)
-            res.json({name, email, _id})
+            const {name, email, _id} = await User.findById(userData.id);
+            res.json({name, email, _id});
         })
 
     } else {
@@ -184,6 +249,8 @@ app.post('/upload', photosMiddleware.array('photos', 100), async (req,res) => {
     }
    res.json(uploadedFiles);
 });
+
+app.post('/purchases')
 
 
 app.listen(4000);

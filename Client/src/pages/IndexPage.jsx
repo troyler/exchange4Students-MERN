@@ -8,15 +8,6 @@ import { list } from "postcss";
 
 export default function IndexPage() {
 
-
-
-
-
-
-
-
-
-
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -66,26 +57,25 @@ export default function IndexPage() {
         </div>
         <div className="cart-count">
           {itemCount > 0 ? `Items in Cart: ${itemCount}` : ""}
-          <CartPage cartItems={cartItems} />
         </div>
         <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredListings.length > 0 && filteredListings.map(listing => (
           <Link to = {'/listings/' + listing._id}>
+            <h2 className="text-md p-1 font-semibold truncate">{listing.title}</h2>
             <div className = "bg-gray-500 mb-2 rounded-2xl flex">
               {listing.addedPhotos?.[0] && (
               <img className = "rounded-2xl object-cover aspect-square"src = {"http://localhost:4000/uploads/" + listing.addedPhotos?.[0]} alt ="" />
               )}
             </div>
-            <h2 className="text-md font-semibold truncate">{listing.title}</h2>
             <div className ="justify-between flex">
-              <h2 className = "text-sm">Condition: {listing.condition}</h2>
-              <h3 className="font-bold">${listing.price}</h3>
-              <button
+              <h3 className = "text-sm truncate">Condition: {listing.condition}</h3>
+              <h3 className="-mt-0.5 font-semibold">${listing.price}</h3>
+            </div>
+            <button
             className="add-to-cart-button"
             onClick={() => handleAddToCart(item)}>
             Add to Cart
           </button>
-            </div>
           </Link>
           ))}
       </div>

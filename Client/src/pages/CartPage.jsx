@@ -1,7 +1,19 @@
 import Header from "../Header";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-export default function CartPage({ cartItems }) {
+export default function CartPage() {
+  const [cartItems, setCart] = useState(null);
+
+  useEffect(() => {
+    axios.get('/user-carts')
+    .then(response => {
+        const {data} = response;
+        console.log(data)
+        setCart(data);
+    })
+},[]);
   return (
     <div>
       <h2>Your Cart:</h2>
@@ -9,7 +21,7 @@ export default function CartPage({ cartItems }) {
         <ul>
           {cartItems.map((item, index) => (
             <li key={index}>
-              {item.name} - ${item.price}
+              {item.title} - ${item.price}
             </li>
           ))}
         </ul>

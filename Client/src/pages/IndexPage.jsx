@@ -8,15 +8,6 @@ import { list } from "postcss";
 
 export default function IndexPage() {
 
-
-
-
-
-
-
-
-
-
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -66,7 +57,6 @@ export default function IndexPage() {
         </div>
         <div className="cart-count">
           {itemCount > 0 ? `Items in Cart: ${itemCount}` : ""}
-          <CartPage cartItems={cartItems} />
         </div>
         <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredListings.length > 0 && filteredListings.map(listing => (

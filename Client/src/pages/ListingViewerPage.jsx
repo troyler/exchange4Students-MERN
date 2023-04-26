@@ -17,8 +17,18 @@ export default function ListingViewerPage() {
         axios.get('/listings/'+ id)
         .then(response => {
         setListing(response.data);
+        console.log(id);
         })
-  },[id]);
+    },[id]);
+
+
+    async function addToCart() {
+        console.log(listing._id)
+        const data = {listing}
+        await axios.post('/carts',{
+            data
+        });
+    }
 
   
 
@@ -79,6 +89,8 @@ export default function ListingViewerPage() {
                 </svg>
                 Show More Photos
                 </button>
+
+                <button onClick = {addToCart}> Add to Cart </button>
 
             </div>
             <div className="mt-4">

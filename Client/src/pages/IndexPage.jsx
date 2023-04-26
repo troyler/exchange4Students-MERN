@@ -36,8 +36,6 @@ export default function IndexPage() {
     console.log(cartItems);
   };
 
-
-
   return (
     <div>
       <h1>Homepage - Browse Items</h1>
@@ -80,5 +78,6 @@ export default function IndexPage() {
           ))}
       </div>
       </div>
-  );
+
+);
 }

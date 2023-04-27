@@ -21,15 +21,29 @@ export default function ListingViewerPage() {
         })
     },[id]);
 
+    useEffect(() => {
+    axios.get('/carts')
+    .then(response => {
+        const data = response;
+        console.log("incoming data" +[data]);
+        setHasCart([data]);
+        console.log(data.data);
+    })
+},[]);
+
 
     async function addToCart() {
         if (!hasCart){
-        const data = {listing}
-        console.log("data from listing viewer page " + data);
-        await axios.post('/carts',{
-            data: id
-        });
-    } 
+            const data = {listing}
+            console.log("data from listing viewer page " + data);
+            await axios.post('/carts',{
+                data: id
+            });
+        } else {
+            await axios.put('/carts', {
+                data: id  
+            })
+        }
 }
   
 

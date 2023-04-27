@@ -49,49 +49,47 @@ app.post('/carts', async (req,res) => {
     })
 });
 
-app.get('/user-carts', (req,res) => {
+app.get('/carts', (req,res) => {
     const {token} = req.cookies;
+    const cartItems = [];
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
         const {id} = userData;
         const userCart = await Cart.find({owner:id})
-        console.log(userCart);
         if (!userCart || userCart[0]=== undefined) {
-            return res.status(404).json({ msg: 'Product not found' });
+            return res.status(404).json({ msg: 'Cart not found' });
         }
         else {
-        const product = await Product.findById(userCart[0].items[0].product)
-        res.json(product);
+        const products = userCart[0].items;
+        let i = 0;
+        while (i < products.length) {
+            const product = await Product.findById(products[i].product);
+            cartItems.push(product)
+            i++;
+        }
+        console.log(cartItems);
+        res.json(cartItems);
         }
         
     })
 })
 
-app.put('/user-carts', async (req,res) => {
+app.put('/carts', async (req,res) => {
     const {token} = req.cookies;
+    const {data} = req.body;
+    console.log(data);
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
-        const cartDoc = await Cart.findByIdAndUpdate(id);
+        const cartDoc = await Cart.findOneAndUpdate({owner: userData.id}, {
+            
+            "$push": { "items": {product: data} } 
+        });
         if (userData.id === cartDoc.owner.toString()) {
-            cartDoc.update
+            cartDoc.update();
             res.json('ok')
 
         }
     });
-});
-
-
-app.post('/user-carts',async (req,res) => {
-    const {token} = req.cookies;
-    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-        const listingId = req.params;
-        const {id} = userData;
-        const product = await Product.findById(listingId)
-        if (!product) {
-            return res.status(404).json({ msg: 'Product not found' });
-        }
-        const cart = await Cart.findOne({owner: id})
-    })
 });
 
 app.get("/test", (req,res) => {

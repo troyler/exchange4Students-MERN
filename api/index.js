@@ -142,6 +142,13 @@ app.get('/user-listings', (req,res) => {
     })
 })
 
+app.delete('/user-listings', async (req,res) => {
+    const {token} = req.cookies;
+    const {listing} = req.body;
+    console.log({listing});
+        res.json(await Product.findByIdAndDelete(listing._id))
+    });
+
 app.get('/listings', async (req,res) => {
     res.json(await Product.find());
 });

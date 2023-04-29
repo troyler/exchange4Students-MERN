@@ -6,11 +6,23 @@ import AccountNavigation from "../AccountNavigation";
 export default function ListingsPage(){
 
     const [listings, setListings] = useState([]);
+
     useEffect(() => {
         axios.get('/user-listings').then(({data}) => {
             setListings(data);
         });
     }, []);
+
+    async function removeListing(ev, listing) {
+      ev.preventDefault();
+      const data = {listing};
+      console.log("data to be deleted " + listing);
+      await axios.delete('/user-listings', {
+        data
+      });
+    }
+
+    
    
     return (
         <div>
@@ -33,6 +45,7 @@ export default function ListingsPage(){
                     <h2 className="text-xl">{listing.title}</h2>
                     <p className="text-sm mt-2">{listing.description}</p>
                     <p className="text-sm mt-2">${listing.price}</p>
+                    <button onClick = {(ev) => removeListing(ev,listing)}>Delete Listing</button>
                   </div>
                 </Link>
               ))}

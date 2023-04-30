@@ -31,18 +31,16 @@ mongoose.connect(process.env.MONGO_URL)
 app.post('/carts', async (req,res) => {
     const {quantity} = 1;
     const {data} = req.body;
-    console.log("data sent with add to cart "+ data);
     const{token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
         try{
             const cartDoc = await Cart.create({
                 owner : userData.id,
-                items: [{product: data, quantity}],
+                items: [{product: data, quantity: 1}],
                 totalPrice: 1,
             });
             res.json(cartDoc);
-            console.log("Cart creation document" + cartDoc);
         } catch(e) {
             res.status(422).json(e);
         }
@@ -67,7 +65,6 @@ app.get('/carts', (req,res) => {
             cartItems.push(product)
             i++;
         }
-        console.log(cartItems);
         res.json(cartItems);
         }
         
@@ -80,17 +77,35 @@ app.put('/carts', async (req,res) => {
     console.log(data);
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
+        const userCart = await Cart.find({owner: userData.id});
+        const currentListing = await Product.findById(data)
+
+        if (userData.id === currentListing.owner.toString()){
+            res.json("Cannot add own item");
+            return;
+        }
+
+        const products = userCart[0].items;
+        let i = 0;
+        while (i < products.length) {
+            const product = await Product.findById(products[i].product);
+            if (data === product._id.toString()){
+                res.json("item already in cart");
+                return;
+            }
+            i++;
+        }
+    
         const cartDoc = await Cart.findOneAndUpdate({owner: userData.id}, {
-            
-            "$push": { "items": {product: data} } 
+            "$push": { "items": {product: data, quantity:1}} 
         });
         if (userData.id === cartDoc.owner.toString()) {
             cartDoc.update();
-            res.json('ok')
-
+            res.json('Added to Cart')
         }
     });
 });
+
 
 app.get("/test", (req,res) => {
     res.json('test ok');
@@ -145,7 +160,6 @@ app.get('/user-listings', (req,res) => {
 app.delete('/user-listings', async (req,res) => {
     const {token} = req.cookies;
     const {listing} = req.body;
-    console.log({listing});
         res.json(await Product.findByIdAndDelete(listing._id))
     });
 
@@ -172,7 +186,7 @@ app.put('/listings', async (req,res) => {
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
-        const productDoc = await product.findById(id);
+        const productDoc = await Product.findById(id);
         if (userData.id === productDoc.owner.toString()) {
             productDoc.set({id,
                 title,

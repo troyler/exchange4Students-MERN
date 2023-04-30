@@ -7,6 +7,7 @@ import { Navigate, useParams} from "react-router-dom";
 export default function ListingsFormPage(){
 
     const {id} = useParams();
+    console.log(id);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');

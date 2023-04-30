@@ -5,7 +5,6 @@ import CartPage from "./CartPage";
 import axios from "axios";
 import { list } from "postcss";
 
-
 export default function IndexPage() {
 
   const [listings, setListings] = useState([]);
@@ -72,7 +71,7 @@ export default function IndexPage() {
             <button
             className="add-to-cart-button"
             onClick={() => handleAddToCart(item)}>
-            Add to Cart
+            View Item
           </button>
           </Link>
           ))}

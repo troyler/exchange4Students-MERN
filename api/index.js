@@ -28,7 +28,7 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL)
 
-app.post('/carts', async (req,res) => {
+app.post('/carts', async (req,res) => { //creating a cart
     const {quantity} = 1;
     const {data} = req.body;
     console.log("data sent with add to cart "+ data);
@@ -49,7 +49,7 @@ app.post('/carts', async (req,res) => {
     })
 });
 
-app.get('/user-carts', (req,res) => {
+app.get('/user-carts', (req,res) => { //accessig a cart
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
@@ -67,7 +67,7 @@ app.get('/user-carts', (req,res) => {
     })
 })
 
-app.put('/user-carts', async (req,res) => {
+app.put('/user-carts', async (req,res) => { // add items to crat
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
@@ -81,7 +81,7 @@ app.put('/user-carts', async (req,res) => {
 });
 
 
-app.post('/user-carts',async (req,res) => {
+app.post('/user-carts',async (req,res) => { //this is not used 
     const {token} = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         const listingId = req.params;

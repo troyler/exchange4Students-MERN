@@ -135,7 +135,7 @@ app.delete('/carts', async (req,res) => {
         if (err) throw err;
         const cartDoc = await Cart.find({owner: userData.id});
         const removal = await Cart.findByIdAndDelete(cartDoc[0]._id);
-        console.log(cartDoc)
+        res.json(removal);
     });
 });
 

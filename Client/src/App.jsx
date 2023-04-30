@@ -24,6 +24,7 @@ function App() {
         <Route path = "/login" element = {<LoginPage  />}/>
         <Route path = "/register" element = {<RegisterPage  />}/>
         <Route path = "/cart" element = {<CartPage  />}/>
+        <Route path = "/profile/carts" element = {<CartPage  />}/>
         <Route path = "/profile" element = {<ProfilePage  />}/>
         <Route path = "/profile/listings" element = {<ListingsPage  />}/>
         <Route path = "/profile/listings/:id" element = {<ListingsFormPage  />}/>

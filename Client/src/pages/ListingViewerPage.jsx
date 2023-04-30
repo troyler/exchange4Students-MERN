@@ -9,6 +9,7 @@ export default function ListingViewerPage() {
 
     const [listing, setListing] = useState('');
     const [showAllPhotos, setShowAllPhotos] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(false);
 
 
     useEffect(() => {
@@ -38,13 +39,31 @@ export default function ListingViewerPage() {
             console.log("data from listing viewer page " + data);
             await axios.post('/carts',{
                 data: id
+            }).then(response => {
+                const data = response;
+                if (response !== "Added to Cart") {
+                    return;
+                } else {
+                    setAddedToCart(true);
+                }
             });
-        } else {
-            await axios.put('/carts', {
-                data: id  
-            })
-        }
-}
+            } else {
+                await axios.put('/carts', {
+                    data: id  
+                }).then(response => {
+                    const data = response;
+                    if (response !== "Added to Cart") {
+                        return;
+                    } else {
+                        setAddedToCart(true);
+                    }
+                });
+
+            }
+    }
+
+    async function removeFromCart() {
+    }
   
 
   if (!listing) return '';
@@ -104,8 +123,12 @@ export default function ListingViewerPage() {
                 </svg>
                 Show More Photos
                 </button>
-
+                <div>
+                {addedToCart? 
+                <button onClick = {removeFromCart}> Remove From Cart </button> :
                 <button onClick = {addToCart}> Add to Cart </button>
+                }
+                </div>
 
             </div>
             <div className="mt-4">

@@ -20,16 +20,19 @@ export default function CartPage() {
     })
 },[]);
 
-    function calculateTotal(){  ///this is not working as of now
-      let total = 0;
-      if (listings.length > 0) {
-        listings.map(listing => (
-          total += listing.data.price
-        ));
-        setTotalPrice(total);
-        console.log(totalPrice)
+useEffect(() => {
+  let total = 0;
+  axios.get('/carts')
+  .then(response => {
+      const data = response;
+      console.log("incoming data" +[data]);
+      for (const listing of data.data) {
+        total += listing.price;
     }
-  }
+      setTotalPrice(total);
+      console.log(totalPrice)
+  })
+},[]);
 
   return (
     <div className="mt-4">
@@ -47,6 +50,7 @@ export default function CartPage() {
                     <h2 className="text-xl">{listing.title}</h2>
                     <p className="text-sm mt-2">{listing.description}</p>
                     <p className="text-sm mt-2">${listing.price}</p>
+                    <button> Remove from Cart</button>
                   </div>
                 </Link>
               ))}

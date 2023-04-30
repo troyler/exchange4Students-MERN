@@ -4,6 +4,7 @@ import axios from "axios";
 import { UserContext } from "../UserContext";
 import ListingsPage from "./ListingsPage";
 import AccountNavigation from "../AccountNavigation";
+import CartPage from "./CartPage";
 
 
 export default function ProfilePage() {
@@ -43,6 +44,9 @@ export default function ProfilePage() {
                     Logged in as {user.name} {user.email}<br />
                 <button className= "primary max-w-sm mt-2" onClick = {logout}>Logout</button>
                 </div>
+            )}
+            {subpage === 'carts' && (
+                <CartPage/>
             )}
             {subpage === 'listings' && (
                 <ListingsPage/>

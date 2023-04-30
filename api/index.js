@@ -160,8 +160,24 @@ app.get('/user-listings', (req,res) => {
 app.delete('/user-listings', async (req,res) => {
     const {token} = req.cookies;
     const {listing} = req.body;
-        res.json(await Product.findByIdAndDelete(listing._id))
+    await Product.findByIdAndDelete(listing._id);
+    const userCarts = await Cart.find();
+    
+    let i = 0;
+    while (i < userCarts.length) {
+        currentCart = userCarts[i];
+        cartItemList = userCarts[i].items;
+        for (let j = 0; j < cartItemList.length; j++) {
+            if (cartItemList[j].product.toString() === listing._id){
+                const cartDoc = await Cart.findOneAndUpdate({owner: currentCart.owner}, {
+                    "$pull": { "items": {product: listing._id, quantity:1}} 
+                });
+            }
+        }
+    i++;
+    }
     });
+
 
 app.get('/listings', async (req,res) => {
     res.json(await Product.find());

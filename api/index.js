@@ -74,7 +74,6 @@ app.get('/carts', (req,res) => {
 app.put('/carts', async (req,res) => {
     const {token} = req.cookies;
     const {data} = req.body;
-    console.log(data);
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
         if (err) throw err;
         const userCart = await Cart.find({owner: userData.id});
@@ -106,6 +105,39 @@ app.put('/carts', async (req,res) => {
     });
 });
 
+app.patch('/carts', async (req,res) => {
+    const {token} = req.cookies;
+    const {data} = req.body
+    cartItems = [];
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        Cart.update( 
+            {owner: userData.id}, 
+            { $pull: {"items":  {product: data, quantity: 1}}} 
+            ).then(async () => {
+               const userCart = await Cart.find({owner: userData.id});
+               const products = userCart[0].items;
+                let i = 0;
+                while (i < products.length) {
+                    const product = await Product.findById(products[i].product);
+                    cartItems.push(product)
+                    i++;
+                }
+                res.json(cartItems);
+            })
+       
+        })
+});
+
+app.delete('/carts', async (req,res) => {
+    const {token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        const cartDoc = await Cart.find({owner: userData.id});
+        const removal = await Cart.findByIdAndDelete(cartDoc[0]._id);
+        console.log(cartDoc)
+    });
+});
 
 app.get("/test", (req,res) => {
     res.json('test ok');
@@ -285,6 +317,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), async (req,res) => {
     }
    res.json(uploadedFiles);
 });
+
 
 app.post('/purchases')
 

@@ -34,6 +34,21 @@ useEffect(() => {
   })
 },[]);
 
+async function removeFromCart(ev, listing) {
+    ev.preventDefault();
+    if (listing.length !== 1){
+      const data = {listing}
+      await axios.patch('/carts',{
+          data : listing
+      }).then(async response => {
+        const data = response;
+        setListing(data.data);
+      })
+    } else {
+      await axios.delete("/carts").then(async response => setListing(response.data));
+    }
+  }
+
   return (
     <div className="mt-4">
               {listings.length > 0 && (
@@ -50,7 +65,7 @@ useEffect(() => {
                     <h2 className="text-xl">{listing.title}</h2>
                     <p className="text-sm mt-2">{listing.description}</p>
                     <p className="text-sm mt-2">${listing.price}</p>
-                    <button> Remove from Cart</button>
+                    <button className ="cursor-default" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
                   </div>
                 </Link>
               ))}

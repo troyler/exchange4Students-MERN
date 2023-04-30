@@ -62,8 +62,6 @@ export default function ListingViewerPage() {
             }
     }
 
-    async function removeFromCart() {
-    }
   
 
   if (!listing) return '';

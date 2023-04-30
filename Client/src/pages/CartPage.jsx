@@ -36,7 +36,7 @@ useEffect(() => {
 
 async function removeFromCart(ev, listing) {
     ev.preventDefault();
-    if (listing.length !== 1){
+    if (listings.length !== 1){
       const data = {listing}
       await axios.patch('/carts',{
           data : listing
@@ -45,7 +45,10 @@ async function removeFromCart(ev, listing) {
         setListing(data.data);
       })
     } else {
-      await axios.delete("/carts").then(async response => setListing(response.data));
+      await axios.delete("/carts").
+      then(async response => {
+        setListing([])});
+        
     }
   }
 

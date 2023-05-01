@@ -172,6 +172,7 @@ app.post('/listings', async (req,res) => {
                 price,
                 condition,
                 category,
+                sold: false,
                 addedPhotos,
             });
             res.json(productDoc);
@@ -229,6 +230,7 @@ app.put('/listings', async (req,res) => {
         price,
         condition,
         category,
+        sold,
         addedPhotos,
     } = req.body;
     const {token} = req.cookies;
@@ -242,6 +244,7 @@ app.put('/listings', async (req,res) => {
                 price,
                 condition,
                 category,
+                sold,
                 addedPhotos,});
             await productDoc.save()
             res.json('ok')

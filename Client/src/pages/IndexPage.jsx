@@ -21,7 +21,7 @@ export default function IndexPage() {
       setListings([...response.data]);
     })
   },[]);
-
+  
 
   const filteredListings = listings.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -58,6 +58,8 @@ export default function IndexPage() {
         </div>
         <div className = "mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredListings.length > 0 && filteredListings.map(listing => (
+          <div>
+            {!listing.sold && (
           <Link to = {'/listings/' + listing._id}>
             <h2 className="text-md p-1 font-semibold truncate">{listing.title}</h2>
             <div className = "bg-gray-500 mb-2 rounded-2xl flex">
@@ -75,6 +77,8 @@ export default function IndexPage() {
             Add to Cart
           </button>
           </Link>
+          )}
+          </div>
           ))}
       </div>
       </div>

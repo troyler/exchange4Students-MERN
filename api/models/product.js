@@ -8,6 +8,7 @@ const ProductSchema = new Schema({
     price: Number,
     condition: String,
     category: String,
+    sold: Boolean,
     addedPhotos: [String],
 
 });

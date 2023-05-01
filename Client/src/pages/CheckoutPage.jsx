@@ -24,7 +24,7 @@ export default function CheckoutPage() {
     })
 },[]);
 
-useEffect(() => {
+async function getTotal(){
   let total = 0;
   axios.get('/carts')
   .then(response => {
@@ -36,6 +36,10 @@ useEffect(() => {
       setTotalPrice(total);
       console.log(totalPrice)
   })
+}
+
+useEffect(() => {
+  getTotal();
 },[]);
 
 async function removeFromCart(ev, listing) {
@@ -52,9 +56,37 @@ async function removeFromCart(ev, listing) {
       await axios.delete("/carts").
       then(async response => {
         setListing([])});
-        
     }
+    getTotal();
   }
+
+    async function removeListing(ev, listing) {
+      ev.preventDefault();
+      const data = {listing};
+      console.log("data to be deleted " + listing);
+      await axios.delete('/user-listings', {
+        data
+      });
+    }
+
+    async function checkout(ev) {
+        ev.preventDefault();
+        const listingData = {title, description, price,
+                condition, category, addedPhotos,
+        }
+        if (listings.length>1) {
+            await axios.put('/purchases',{
+                id,
+                ...listingData
+            });
+            alert("Succesfully listed item");
+            setRedirect(true)
+            
+        } else {
+            return;
+    }
+}
+
 
   return (
     <div className="mt-4 grid gap-x-20 gap-y-8 grid-cols-2">
@@ -79,7 +111,7 @@ async function removeFromCart(ev, listing) {
             )}
             </div>
             <div className="grid">
-            <form className="flex-row pt-12">
+            <form onSubmit={checkout} className="flex-row pt-12">
                 <h2 className = "pt-4">First Name</h2>
                 <input 
                     type = "text" 
@@ -126,6 +158,7 @@ async function removeFromCart(ev, listing) {
                 </div>
                 </div>
                 </div>
+                <button className="mt-4 primary"> Checkout</button>
             </form>
 
             </div>

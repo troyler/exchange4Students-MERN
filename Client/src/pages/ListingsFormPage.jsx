@@ -16,6 +16,8 @@ export default function ListingsFormPage(){
     const [category, setCategory] = useState('Home Goods');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirect, setRedirect] = useState(false);
+    const [sold, setSold] = useState(false);
+    const [updateListing, setUpdateListing] = useState(null);
 
     useEffect(() => {
         if (!id){
@@ -24,12 +26,14 @@ export default function ListingsFormPage(){
         axios.get('/listings/'+id)
         .then(response => {
             const {data} = response;
+            if (!data.sold){ 
             setTitle(data.title);
             setDescription(data.description);
             setPrice(data.price);
             setCondition(data.condition);
             setCategory(data.category);
             setAddedPhotos(data.addedPhotos);
+            };
         })
     }, [id]);
 

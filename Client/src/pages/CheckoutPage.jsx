@@ -11,8 +11,8 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [buyerEmail, setBuyerEmail] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
+  
 
   useEffect(() => {
     axios.get('/carts')
@@ -61,6 +61,14 @@ async function removeFromCart(ev, listing) {
     getTotal();
   }
 
+  async function updateSellStatus(){
+    console.log(listings);
+    axios.patch("/listings", {
+        data: listings
+    })
+
+  }
+
     async function removeListings() {
       for (const listing in listings){  
       const data = {listing};
@@ -71,23 +79,28 @@ async function removeFromCart(ev, listing) {
     };
     }
 
+    async function deleteCart(){
+        await axios.delete("/carts")
+        .then(async response => {
+        setListing([])});
+    }
+
     async function checkout(ev) {
         ev.preventDefault();
-        const listingData = {title, description, price,
-                condition, category, addedPhotos,
-        }
-        if (listings.length>1) {
-            await axios.put('/purchases',{
-                id,
-                ...listingData
+        console.log(listings.length)
+        if (listings.length > 1) {
+            await axios.post('/purchases',{
+                data: listings,
+                totalPrice,
+                firstName,
+                lastName,
+            }).then(async () => {
+                await deleteCart();
+                await updateSellStatus();
+
             });
-            alert("Succesfully listed item");
-            setRedirect(true)
-            
-        } else {
-            return;
+        }
     }
-}
 
 
   return (
@@ -160,7 +173,7 @@ async function removeFromCart(ev, listing) {
                 </div>
                 </div>
                 </div>
-                <button className="mt-4 primary"> Checkout</button>
+                <button className="mt-4 primary">Complete Purchase</button>
             </form>
 
             </div>

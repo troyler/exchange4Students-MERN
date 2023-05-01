@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const User = require('./models/User')
-const Product = require("./models/Product")
-const Cart = require("./models/Cart")
+const User = require('./models/User');
+const Product = require("./models/Product");
+const Purchase = require("./models/PurchaseOrder");
+const Cart = require("./models/Cart");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
@@ -27,6 +28,38 @@ app.use(cors({
 
 
 mongoose.connect(process.env.MONGO_URL)
+
+
+app.post('/purchases', async (req,res) => {
+    const {data, totalPrice, firstName, lastName} = req.body;
+    const itemList = [];
+        for (let j = 0; j < data.length; j++) {
+            userDoc = await User.findById(data[j].owner);
+            itemList.push({
+                product: data[j]._id,
+                quantity: 1,
+                sellerEmail: userDoc.email})
+        }
+    const{token} = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        try{
+            const purchaseDoc = await Purchase.create({
+                owner : userData.id,
+                items: itemList,
+                totalPrice: totalPrice,
+                firstName: firstName,
+                lastName: lastName,
+                buyerEmail: userData.email,
+            });
+
+            res.json(purchaseDoc);
+
+        } catch(e) {
+            res.status(422).json(e);
+        }
+    })
+});
 
 app.post('/carts', async (req,res) => {
     const {quantity} = 1;
@@ -209,7 +242,8 @@ app.delete('/user-listings', async (req,res) => {
         }
     i++;
     }
-    });
+});
+
 
 
 app.get('/listings', async (req,res) => {
@@ -220,6 +254,16 @@ app.get('/listings/:id', async (req,res) => {
     const {id} = req.params;
     res.json(await Product.findById(id));
 });
+
+app.patch("/listings", async (req,res) => {
+    const {data} = req.body;
+    const itemList = [];
+    for (let j = 0; j < data.length; j++) {
+        const productDoc = await Product.findById(data[j]._id);
+        console.log(productDoc);
+    }
+
+})
 
 
 app.put('/listings', async (req,res) => {

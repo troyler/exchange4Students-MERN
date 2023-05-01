@@ -53,25 +53,27 @@ async function removeFromCart(ev, listing) {
   }
 
   return (
-    <div className="mt-4">
-              {listings.length > 0 && (
-                <div className="text-center max-w-lg mx-auto">
-                      <h1>Total Price: ${totalPrice}</h1>
-                </div>
-            )}
-              {listings.length > 0 && listings.map(listing => (
-                <Link to={'/listings/'+listing._id} className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl">
-                  <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
-                       <img  className ="object-cover" src = {'http://localhost:4000/uploads/' + listing.addedPhotos[0]}></img>
-                  </div>
-                  <div className="grow-0 shrink">
-                    <h2 className="text-xl">{listing.title}</h2>
-                    <p className="text-sm mt-2">{listing.description}</p>
-                    <p className="text-sm mt-2">${listing.price}</p>
-                    <button className ="cursor-default" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
-                  </div>
-                </Link>
-              ))}
+    <div className="mt-4 relative min-h-screen">
+      <h1 className="text-2xl"> Cart </h1>
+          <div className="text-center max-w-lg mx-auto">
+                <h1>Total Price: ${totalPrice}</h1>
+          </div>
+          {listings.length > 0 && listings.map(listing => (
+            <Link to={'/listings/'+listing._id} className="flex cursor-pointer gap-4 m-4 bg-gray-100 p-4 rounded-2xl">
+              <div className="flex w-32 h-32 bg-gray-300 grow-0 shrink-0">
+                    <img  className ="object-cover" src = {'http://localhost:4000/uploads/' + listing.addedPhotos[0]}></img>
+              </div>
+              <div className="grow-0 shrink">
+                <h2 className="text-xl">{listing.title}</h2>
+                <p className="text-sm mt-2">{listing.description}</p>
+                <p className="text-sm mt-2">${listing.price}</p>
+                <button className ="cursor-default" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
+              </div>
+            </Link>
+           ))}
+            <Link to={'/checkout'} className="absolute bottom cursor-pointer w-full flex justify-center">
+              <button className = "primary"> Checkout</button> 
+            </Link>
             </div>
   )
 }

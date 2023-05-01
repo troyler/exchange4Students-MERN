@@ -11,6 +11,7 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [buyerEmail, setBuyerEmail] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
 
   useEffect(() => {
@@ -60,13 +61,14 @@ async function removeFromCart(ev, listing) {
     getTotal();
   }
 
-    async function removeListing(ev, listing) {
-      ev.preventDefault();
+    async function removeListings() {
+      for (const listing in listings){  
       const data = {listing};
       console.log("data to be deleted " + listing);
       await axios.delete('/user-listings', {
         data
       });
+    };
     }
 
     async function checkout(ev) {

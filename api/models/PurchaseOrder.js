@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const PurchaseOrderSchema = new Schema({
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', unique:false},
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     items: [{
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', unique: true},
     quantity: { type: Number},

@@ -259,9 +259,12 @@ app.patch("/listings", async (req,res) => {
     const {data} = req.body;
     const itemList = [];
     for (let j = 0; j < data.length; j++) {
-        const productDoc = await Product.findById(data[j]._id);
+        const productDoc = await Product.findByIdAndUpdate(data[j]._id, {
+            "$set": { sold : true} 
+        });
         console.log(productDoc);
     }
+    res.json("ok")
 
 })
 

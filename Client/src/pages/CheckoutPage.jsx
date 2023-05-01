@@ -88,7 +88,7 @@ async function removeFromCart(ev, listing) {
     async function checkout(ev) {
         ev.preventDefault();
         console.log(listings.length)
-        if (listings.length > 1) {
+        if (listings.length > 0) {
             await axios.post('/purchases',{
                 data: listings,
                 totalPrice,

@@ -17,7 +17,7 @@ export default function Header() {
             <div className="flex gap-5 border border-gray-300 rounded-full p-2 px-4 shadow-md shadow-gray-260">
                 <Link to={"/"}>Browse</Link>
                 <div className="border border-l borger-gray-300"></div>
-                <Link to={"/listing"}>Sell</Link>
+                <Link to={"/profile/listings"}>Sell</Link>
                 <div className="border border-l borger-gray-300"></div>
                 <Link to={"/cart"}>Cart</Link>
             </div>

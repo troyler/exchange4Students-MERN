@@ -81,7 +81,7 @@ export default function ListingsFormPage(){
                 <textarea 
                     value = {description} 
                     onChange = {ev => setDescription(ev.target.value)} 
-                    className="w-full" 
+                    className="w-full border rounded-xl" 
                 />
                 <h2 className = "text-l mt-4">Price</h2>
                 <input 
@@ -89,8 +89,9 @@ export default function ListingsFormPage(){
                     value = {price} 
                     onChange = {ev => setPrice(ev.target.value)}
                     placeholder = "$" 
+                    className="border rounded"
                 />
-                <h2 className = "text-l mt-4">Condition</h2>
+                <h2 className = "text-xl mt-4 mb-2">Condition</h2>
                 <label>Pick Condition:        &nbsp;    </label>
                     <select value = {condition} onChange = {ev => setCondition(ev.target.value)} id="condition">
                         <optgroup label="Conditions">
@@ -109,9 +110,9 @@ export default function ListingsFormPage(){
                         <option value="Mobile Technology"> Mobile Technology </option>
                         </optgroup>
                     </select>
-                <h2 className = "text-l mt-4">Photos</h2>
+                <h2 className = "text-xl mt-4">Photos</h2>
                 <PhotosUploader  addedPhotos = {addedPhotos} onChange ={setAddedPhotos}/>
-                <button className="primary">Publish Listing</button>
+                <button className="primary mt- 8">Publish Listing</button>
             </form>
         </div>
     );

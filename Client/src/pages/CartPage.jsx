@@ -20,7 +20,7 @@ export default function CartPage() {
     })
 },[]);
 
-useEffect(() => {
+async function getTotal(){
   let total = 0;
   axios.get('/carts')
   .then(response => {
@@ -32,6 +32,10 @@ useEffect(() => {
       setTotalPrice(total);
       console.log(totalPrice)
   })
+}
+
+useEffect(() => {
+  getTotal();
 },[]);
 
 async function removeFromCart(ev, listing) {
@@ -48,8 +52,8 @@ async function removeFromCart(ev, listing) {
       await axios.delete("/carts").
       then(async response => {
         setListing([])});
-        
     }
+    getTotal();
   }
 
   return (

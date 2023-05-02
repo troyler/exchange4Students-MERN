@@ -124,13 +124,13 @@ export default function ListingViewerPage() {
                 <div>
                 {addedToCart? 
                 <button onClick = {removeFromCart}> Remove From Cart </button> :
-                <button onClick = {addToCart}> Add to Cart </button>
+                <button className= "primary max-w-sm mt-2" onClick = {addToCart}> Add to Cart </button>
                 }
                 </div>
 
             </div>
             <div className="mt-4">
-                <h2 className="font-semibold"> Decription:</h2>
+                <h2 className="font-semibold"> Description:</h2>
                 <p>{listing.description}</p>
                 <h2 className="py-4">Condition: {listing.condition}</h2>
             </div>

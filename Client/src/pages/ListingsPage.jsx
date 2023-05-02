@@ -45,7 +45,7 @@ export default function ListingsPage(){
                     <h2 className="text-xl">{listing.title}</h2>
                     <p className="text- mt-2">{listing.description}</p>
                     <p className="text-sm mt-2">${listing.price}</p>
-                    <button onClick = {(ev) => removeListing(ev,listing)}>Delete Listing</button>
+                    <button className= "primary max-w-sm mt-2" onClick = {(ev) => removeListing(ev,listing)}>Delete Listing</button>
                   </div>
                 </Link>
               ))}

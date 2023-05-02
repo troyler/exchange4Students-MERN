@@ -71,7 +71,7 @@ async function removeFromCart(ev, listing) {
                 <h2 className="text-xl">{listing.title}</h2>
                 <p className="text-sm mt-2">{listing.description}</p>
                 <p className="text-sm mt-2">${listing.price}</p>
-                <button className ="cursor-default" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
+                <button className= "primary max-w-sm mt-2" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove </button>
               </div>
             </Link>
            ))}

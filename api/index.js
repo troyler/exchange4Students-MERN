@@ -276,7 +276,7 @@ app.delete('/user-listings', async (req,res) => {
 
 
 app.get('/listings', async (req,res) => {
-    res.json(await Product.find());
+    res.json(await Product.find({sold:false}));
 });
 
 app.get('/listings/:id', async (req,res) => {

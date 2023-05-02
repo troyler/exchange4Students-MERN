@@ -13,6 +13,7 @@ const app = express();
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'fasefrawr4r5r3wqsdfdsfdfsdf'
@@ -31,6 +32,15 @@ mongoose.connect(process.env.MONGO_URL)
 
 
 app.post('/purchases', async (req,res) => {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, 
+        auth: {
+          user: 'exchange4students.host@gmail.com', 
+          pass: 'pjseiohzynnhmqml', 
+        },
+      });
     const {data, totalPrice, firstName, lastName} = req.body;
     const itemList = [];
         for (let j = 0; j < data.length; j++) {
@@ -51,6 +61,15 @@ app.post('/purchases', async (req,res) => {
                 firstName: firstName,
                 lastName: lastName,
                 buyerEmail: userData.email,
+
+                
+            });
+            
+            await transporter.sendMail({
+                from: '"Exchange 4 Students" <exchange4students.host@gmail.com>', 
+                to: userData.email,
+                subject: "Order Confirmation", 
+                html: "<b>Your order has been successfully placed!</b>", 
             });
 
             res.json(purchaseDoc);
@@ -59,6 +78,16 @@ app.post('/purchases', async (req,res) => {
             res.status(422).json(e);
         }
     })
+
+    for (let j = 0; j < itemList.length; j++) {    
+            await transporter.sendMail({
+            from: '"Exchange 4 Students" <exchange4students.host@gmail.com>', 
+            to: itemList[j].sellerEmail, 
+            subject: "Order Confirmation", 
+            html: "<b>Your item has sold!</b>", 
+          });
+    }
+
 });
 
 app.post('/carts', async (req,res) => {

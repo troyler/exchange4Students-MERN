@@ -42,7 +42,7 @@ export default function IndexPage() {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search by name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

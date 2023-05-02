@@ -45,7 +45,7 @@ export default function IndexPage() {
       <div className="search-bar">
         <input
           type="text"
-          placeholder="🔍︎ ..."
+          placeholder="🔍︎"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -80,7 +80,7 @@ export default function IndexPage() {
                   )}
                 </div>
                 <div className="justify-between flex">
-                  <h3 className="text-sm truncate">Condition: {listing.condition}</h3>
+                  <h3 className="text-sm truncate"> {listing.condition}</h3>
                   <h3 className="-mt-0.5 font-semibold">${listing.price}</h3>
                 </div>
                 <button

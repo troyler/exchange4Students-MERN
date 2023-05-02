@@ -173,7 +173,7 @@ async function removeFromCart(ev, listing) {
                 </div>
                 </div>
                 </div>
-                <button className="mt-4 primary">Complete Purchase</button>
+                <button className= "primary max-w-sm mt-2">Complete Purchase</button>
             </form>
 
             </div>

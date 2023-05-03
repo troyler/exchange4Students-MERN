@@ -115,7 +115,7 @@ async function removeFromCart(ev, listing) {
                   <div className="grow-0 shrink">
                     <h2 className="text-xl">{listing.title}</h2>
                     <p className="text-sm mt-2">${listing.price}</p>
-                    <button className ="cursor-default" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
+                    <button className ="cursor-default primary" onClick={(ev) => removeFromCart(ev, listing._id)}> Remove from Cart</button>
                   </div>
                 </Link>
               ))}

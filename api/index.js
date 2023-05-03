@@ -37,8 +37,8 @@ app.post('/purchases', async (req,res) => {
         port: 587,
         secure: false, 
         auth: {
-          user: 'exchange4students.host@gmail.com', 
-          pass: 'pjseiohzynnhmqml', 
+          user: 'exchange4students.auto@gmail.com', 
+          pass: 'yaczjcbyjnesahdu', 
         },
       });
     const {data, totalPrice, firstName, lastName} = req.body;
@@ -66,7 +66,7 @@ app.post('/purchases', async (req,res) => {
             });
             
             await transporter.sendMail({
-                from: '"Exchange 4 Students" <exchange4students.host@gmail.com>', 
+                from: '"Exchange 4 Students" <exchange4students.auto@gmail.com>', 
                 to: userData.email,
                 subject: "Order Confirmation", 
                 html: "<b>Your order has been successfully placed!</b>", 
@@ -81,7 +81,7 @@ app.post('/purchases', async (req,res) => {
 
     for (let j = 0; j < itemList.length; j++) {    
             await transporter.sendMail({
-            from: '"Exchange 4 Students" <exchange4students.host@gmail.com>', 
+            from: '"Exchange 4 Students" <exchange4students.auto@gmail.com>', 
             to: itemList[j].sellerEmail, 
             subject: "Order Confirmation", 
             html: "<b>Your item has sold!</b>", 
